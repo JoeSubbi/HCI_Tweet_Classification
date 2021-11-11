@@ -1,0 +1,1 @@
+Web-based application where users can vote to classify tweets in order to separate abusive tweets from non-abusive ones. The app is able to read tweets, categorise them and then provide an accuracy rating based on the votes of other users. The app is focused on visualisation. For more details, please view the MoSCoW entries in the project's wiki
