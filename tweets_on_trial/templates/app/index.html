@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+    <head>
+        <title>Tweets on Trial</title>
+    </head>
+    <body>
+        <h1>Tweets on Trial</h1>
+        <div>
+            stuff! <br />
+            <strong>{{ boldmessage }}</strong><br />
+        </div>
+        <div>
+            <a href="/app/judge/">Judge!</a><br />
+            <img src="{% static 'images/logo.png' %}"
+                 alt="I'm Batman" />
+        </div>
+    </body>
+</html>
