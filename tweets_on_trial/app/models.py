@@ -17,6 +17,8 @@ class TweetResults(models.Model):
     agressive = models.IntegerField(default=0)
     offensive = models.IntegerField(default=0)
 
+    valid = models.BooleanField(default=False)
+
     def __str__(self):
         return f"\tPositive:  {self.positive}\n"\
                f"\tNeutral:   {self.neutral}\n"\
@@ -33,11 +35,16 @@ class TweetResults(models.Model):
                self.offensive
 
     def mode(self):
-        return max((self.positive,
-                    self.neutral,
-                    self.aggressive,
-                    self.offensive
-                   ))
+        m = max((self.positive,
+                 self.neutral,
+                 self.aggressive,
+                 self.offensive
+                ))
+        if self.sum == 0 or self.neutral == m: return "Neutral"
+        elif self.positive  == m: return "Positive"
+        elif self.agressive == m and self.offensive == m: return "Both Agressive and Offensive"
+        elif self.agressive == m: return "Agressive"
+        elif self.agressive == m: return "Offensive"
 
     def normalise(self):
         # positive = 0
