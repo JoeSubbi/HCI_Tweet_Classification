@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 class Tweet(models.Model):
     body = models.CharField(max_length=256)
+    date = models.DateField(default=datetime.date.today)
 
     def __str__(self):
-        return self.body
+        return f"{self.body} -- {self.date}"
 
 class TweetResults(models.Model):
     
