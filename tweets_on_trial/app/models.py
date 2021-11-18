@@ -42,7 +42,9 @@ class TweetResults(models.Model):
         # negative = 1
         # therefore, aggressive + positive = 1
 
-        #agressive + positive - neutral/2 - positive
-        return (self.agressive + self.positive)/2 -\
-                self.neutral/2 - self.positive
+        #agressive + offensive - neutral/2 - positive
+        ratio = (self.agressive + self.offensive)/2 -\
+                 self.neutral/2 - self.positive
+        return (self.positive/ratio, self.neutral/ratio,
+                self.agressive/ratio, self.offensive/ratio)
 
