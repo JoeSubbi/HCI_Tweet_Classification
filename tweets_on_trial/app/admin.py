@@ -1,3 +1,5 @@
 from django.contrib import admin
+from app.models import Tweet, TweetResults
 
-# Register your models here.
+admin.site.register(Tweet)
+admin.site.register(TweetResults)
