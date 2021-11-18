@@ -1,0 +1,12 @@
+{% extends 'avaloq_app/base.html' %}
+{% load static %}
+
+
+{%block content%}
+<script src="{% static 'js/Swipe.js' %}"
+        crossorigin="anonymous"></script>
+<form id="judgement_form" action="{% url 'app:judgement' candidate.unique_id q_num%}" method="post" value="{{ csrf_token }}">
+
+
+
+</form>
