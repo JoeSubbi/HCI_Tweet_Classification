@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 
+from django.db.models.deletion import CASCADE
+
 class Tweet(models.Model):
     body = models.CharField(max_length=256)
     date = models.DateField(default=datetime.date.today)
@@ -67,7 +69,25 @@ class TweetResults(models.Model):
                 "aggressive":self.aggressive/total, "offensive":self.offensive/total}
 
 class UserProfile(models.Model):
-        user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0) # tweets judged
 
-        def __str__(self):
-            return self.user.username
+    def __str__(self):
+        return self.user.username
+
+class UserTweetHistory(models.Model):
+
+    class Judgement(models.TextChoices):
+        POSITIVE   = "Positive"
+        NEUTRAL    = "Neutral"
+        OFFENSIVE  = "Offensive"
+        AGGRESSIVE = "Aggressive"
+
+    user  = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
+    date  = models.DateField(default=datetime.date.today)
+    judgement = models.CharField(
+        max_length=20,
+        choices=Judgement.choices,
+        default=Judgement.NEUTRAL,
+    )
