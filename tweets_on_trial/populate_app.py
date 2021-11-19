@@ -32,39 +32,39 @@ def populate():
     ]
 
     tweet_results = [
-        {"positive" :15,
+        {"positive" :15, # Positive
          "neutral"  :6,
-         "agressive":1,
+         "aggressive":1,
          "offensive":2},
 
-        {"positive" :2,
+        {"positive" :2, # Offensive
          "neutral"  :1,
-         "agressive":11,
-         "offensive":7},
+         "aggressive":7,
+         "offensive":11},
         
-        {"positive" :0,
+        {"positive" :0, # Aggressive
          "neutral"  :1,
-         "agressive":19,
+         "aggressive":19,
          "offensive":4},
         
-        {"positive" :12,
+        {"positive" :12, # Positive
          "neutral"  :8,
-         "agressive":2,
+         "aggressive":2,
          "offensive":2},
 
-        {"positive" :9,
+        {"positive" :9, # Neutral
          "neutral"  :0,
-         "agressive":0,
+         "aggressive":0,
          "offensive":9},
         
-        {"positive" :17,
+        {"positive" :17, # Positive
          "neutral"  :7,
-         "agressive":0,
+         "aggressive":0,
          "offensive":7},
 
-        {"positive" :0,
+        {"positive" :0, # Both Agressive and Offensive
          "neutral"  :5,
-         "agressive":5,
+         "aggressive":5,
          "offensive":5},
     ]
     for tweet, results in zip(tweets, tweet_results):
@@ -85,7 +85,7 @@ def add_results(t, results):
     r = TweetResults.objects.get_or_create(tweet=t)[0]
     r.positive  = results["positive"]
     r.neutral   = results["neutral"]
-    r.agressive = results["agressive"]
+    r.aggressive = results["aggressive"]
     r.offensive = results["offensive"]
     r.save()
     return r

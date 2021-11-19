@@ -14,7 +14,7 @@ class TweetResults(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
     positive  = models.IntegerField(default=0)
     neutral   = models.IntegerField(default=0)
-    agressive = models.IntegerField(default=0)
+    aggressive = models.IntegerField(default=0)
     offensive = models.IntegerField(default=0)
 
     valid = models.BooleanField(default=False)
@@ -22,7 +22,7 @@ class TweetResults(models.Model):
     def __str__(self):
         return f"\tPositive:  {self.positive}\n"\
                f"\tNeutral:   {self.neutral}\n"\
-               f"\tAgressive: {self.agressive}\n"\
+               f"\tAggressive: {self.aggressive}\n"\
                f"\tOffensive: {self.offensive}"
 
     class Meta:
@@ -31,7 +31,7 @@ class TweetResults(models.Model):
     def sum(self):
         return self.positive +\
                self.neutral +\
-               self.agressive +\
+               self.aggressive +\
                self.offensive
 
     def mode(self):
@@ -40,11 +40,20 @@ class TweetResults(models.Model):
                  self.aggressive,
                  self.offensive
                 ))
-        if self.sum == 0 or self.neutral == m: return "Neutral"
-        elif self.positive  == m: return "Positive"
-        elif self.agressive == m and self.offensive == m: return "Both Agressive and Offensive"
-        elif self.agressive == m: return "Agressive"
-        elif self.agressive == m: return "Offensive"
+        negative = self.offensive + self.aggressive
+
+        # If empty
+        if self.sum == 0: return "Neutral"
+        # If the max is greater than negative, it must be positive or neutral
+        elif (m > negative):
+            if self.neutral == m: return "Neutral"
+            elif self.positive == m: return "Positive"
+        # If negative == positive it must be neutral
+        elif (negative == self.positive): return "Neutral"
+        # If aggressive or offensive is the highest it must be one of the 2
+        elif self.aggressive == m and self.offensive == m: return "Aggressive & Offensive"
+        elif self.aggressive == m: return "Aggressive"
+        elif self.offensive == m: return "Offensive"
 
     def normalise(self):
         # positive = 0
@@ -52,11 +61,10 @@ class TweetResults(models.Model):
         # negative = 1
         # therefore, aggressive + positive = 1
 
-        #agressive + offensive - neutral/2 - positive
-        ratio = (self.agressive + self.offensive)/2 -\
-                 self.neutral/2 - self.positive
-        return (self.positive/ratio, self.neutral/ratio,
-                self.agressive/ratio, self.offensive/ratio)
+        #aggressive + offensive - neutral/2 - positive
+        total = self.sum()
+        return {"positive":self.positive/total, "neutral":self.neutral/total,
+                "aggressive":self.aggressive/total, "offensive":self.offensive/total}
 
 class UserProfile(models.Model):
         user = models.OneToOneField(User, on_delete=models.CASCADE)
