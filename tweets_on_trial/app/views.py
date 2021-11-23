@@ -11,4 +11,4 @@ def index(request):
     return render(request, 'app/index.html', context=context_dict)
 
 def judge(request):
-    return HttpResponse("JUDGE")
+    return  render(request, 'app/judgement.html', context=context_dict)
