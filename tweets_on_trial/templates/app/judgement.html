@@ -7,18 +7,18 @@
         crossorigin="anonymous"></script>
 <form id="judgement_form" action="{% url 'app:judgement' %}" method="post" value="{{ csrf_token }}">
 
-    <button class="btn" id="up" type="button" name="up_btn" class="btn" value="Neutral">Submit Code</button>
+    <button class="btn" id="up" type="button" name="up_btn" value="Neutral">Submit Code</button>
 
     <div>
-        <button class="btn" id="left" type="button" name="left_btn" class="btn" value="Positive">Submit Code</button>
+        <button class="btn" id="left" type="button" name="left_btn" value="Positive">Submit Code</button>
 
         <label>Tweet</label>
 
-        <button class="btn" id="right" type="button" name="right_btn" class="btn" value="Negative">Submit Code</button>
+        <button class="btn" id="right" type="button" name="right_btn" value="Negative">Submit Code</button>
 
 
     </div>
-    <button class="btn" id="down" type="button" name="up_btn" class="btn" value="Skip">Submit Code</button>
+    <button class="btn" id="down" type="button" name="up_btn" value="Skip">Submit Code</button>
 
 
 </form>
