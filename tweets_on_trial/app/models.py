@@ -83,7 +83,7 @@ class UserTweetHistory(models.Model):
         OFFENSIVE  = "Offensive"
         AGGRESSIVE = "Aggressive"
 
-    user  = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user  = models.ForeignKey(User, on_delete=models.CASCADE)
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
     date  = models.DateField(default=datetime.date.today)
     judgement = models.CharField(
