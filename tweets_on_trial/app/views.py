@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .forms import TweetSubmission
 
 def index(request):
     # Construct a dictionary to pass to the template engine as its context.
@@ -12,4 +13,13 @@ def index(request):
 
 def judge(request):
     context_dict = {'boldmessage': 'ANALYTICS'}
+
+    if request.is_ajax:
+
+
+        isNegative = request.POST.get('isNegative')
+        inputJudgement = request.POST.get('inputJudgement')
+
+        print(isNegative)
+
     return  render(request, 'app/judgement.html', context=context_dict)
