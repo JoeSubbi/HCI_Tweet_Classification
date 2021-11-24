@@ -1,44 +1,18 @@
 
 {% extends 'app/base.html' %}
 {% load static %}
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--BOOTSTRAP LINKS-->
-<link
-rel="stylesheet"
-href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-/>
-<script
-src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-crossorigin="anonymous"
-></script>
-
-<script
-src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-crossorigin="anonymous"
-></script>
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-/>
-<script src="https://cdnjs.cloudfare.com/ajax/libs/rellax/1.7.1/rellax.min.js"></script>
-<link href="{% static 'css/stylesheet.css' %}" rel="stylesheet" />
+{%block body_block%}
 
 
-
-
-
-{% block body_block %}
-    <script src="{% static 'js/Swipe.js' %}"
-            crossorigin="anonymous">
-    </script>
+<script src="{% static 'js/Swipe.js' %}"
+            crossorigin="anonymous"></script>
+            
+    
+    
     <div style="background-color: rgb(43, 99, 255); text-align: center; margin: 100px;">
-        <form id="judgement_form" action="{% url 'app:judge' %}" method="post" value="{{ csrf_token }}">
-            <button class="btn" id="left" type="button" name="left_btn" style="color: white;" value="Positive">Positive</button>
-            <button class="btn" id="up" type="button" name="up_btn" style="color: white;" value="Neutral">Neutral</button>
-            <button class="btn" id="right" type="button" name="right_btn" style="color: white;" value="Negative">Negative</button>
+            <button class="btn" id="left" type="button" name="left_btn" value="Positive">Positive</button>
+            <button class="btn" id="up" type="button" name="up_btn" value="Neutral">Neutral</button>
+            <button class="btn" id="right" type="button" name="right_btn" value="Negative">Negative</button>
             <div class="card">
                 <div class="card-header">
                 Tweet
@@ -54,8 +28,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome
                 </blockquote>
                 </div>
             </div>
-            <button class="btn" id="down" type="button" name="up_btn" style="color: white;" value="Skip">Skip</button>
-        </form>
+            <button class="btn" id="down" type="button" name="up_btn" value="Skip">Skip</button>
     </div>
     <footer class="page-footer font-small blue pt-4 bg-primary">
         <div class="footer-copyright text-center py-3" style="color: white;">
