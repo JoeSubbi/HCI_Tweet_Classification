@@ -48,38 +48,47 @@ def judge(request):
         isNegative = request.POST.get('isNegative')
         inputJudgement = request.POST.get('inputJudgement')
 
-        if(isNegative):
-            if(inputJudgement = 1):
+        if isNegative:
+
+            print("test")
+            if inputJudgement == '1':
 
                 #increment offensive
+                print(1)
 
-            elif(inputJudgement = 2):
+            elif inputJudgement == '2':
 
                 #increment both
+                print(2)
 
-            elif(inputJudgement = 3):
+            elif inputJudgement == '3':
 
                 #increment aggressive
+                print(3)
 
 
-            elif(inputJudgement = 4):
+            elif inputJudgement == '4':
 
                 #increment negative only
+                print(4)
 
         else:
 
-             if(inputJudgement = 1):
+            if inputJudgement == '1':
 
                 #increment positive
+                print(1)
 
-            elif(inputJudgement = 2):
+            elif inputJudgement == '2':
 
                 #increment neutral
+                print(2)
 
 
-            elif(inputJudgement = o):
+            elif inputJudgement == '0':
 
                 #handle skip
+                print(0)
 
     return render(request, 'app/judgement.html', context=context_dict)
 
