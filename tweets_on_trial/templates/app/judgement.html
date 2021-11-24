@@ -1,11 +1,11 @@
-{% extends 'avaloq_app/base.html' %}
+{% extends 'app/base.html' %}
 {% load static %}
 
 
-{%block content%}
+{% block body_block %}
 <script src="{% static 'js/Swipe.js' %}"
         crossorigin="anonymous"></script>
-<form id="judgement_form" action="{% url 'app:judgement' %}" method="post" value="{{ csrf_token }}">
+<form id="judgement_form" action="{% url 'app:judge' %}" method="post" value="{{ csrf_token }}">
 
     <button class="btn" id="up" type="button" name="up_btn" class="btn" value="Neutral">Submit Code</button>
 
@@ -22,3 +22,4 @@
 
 
 </form>
+{% endblock %}
