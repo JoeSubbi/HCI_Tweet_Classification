@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db.models.deletion import CASCADE
 
 class Tweet(models.Model):
@@ -74,6 +75,17 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+@receiver(post_save, sender=TweetResults)
+def update(sender, instance, created, **kwargs):
+    if instance.sum() >= 5:
+        instance.valid = True
+    else: 
+        instance.valid = False
+    post_save.disconnect(update, sender=TweetResults)
+    instance.save()
+    post_save.connect(update, sender=TweetResults)
+
 
 class UserTweetHistory(models.Model):
 
