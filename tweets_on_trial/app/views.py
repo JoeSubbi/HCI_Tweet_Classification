@@ -4,7 +4,9 @@ from app.forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from app.models import Tweet, TweetResults
+from app.models import Tweet, TweetResults, UserTweetHistory
+from datetime import datetime, timedelta
+from random import randint
 
 def index(request):
     # Construct a dictionary to pass to the template engine as its context.
@@ -16,9 +18,29 @@ def index(request):
     return render(request, 'app/index.html', context=context_dict)
 
 def judge(request):
-    context_dict = {}
-    obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
-    context_dict['tweet'] = obj
+
+       # Tweets user has already voted on
+    user = request.user
+    if user.is_anonymous:
+        return HttpResponse("Not logged in")
+    
+    tweets = UserTweetHistory.objects.filter(user=user)
+    
+    # Tweets within past 5 days
+    DAYS = 10
+    past = datetime.now() - timedelta(days=DAYS)
+    tweets = Tweet.objects.exclude(id__in=[t.id for t in tweets]).filter(date__gte=past)
+    
+    if len(tweets) == 0:
+        return HttpResponse("No more tweets right now, come back later")
+
+    # Choose Random
+    tweet = tweets[randint(0, len(tweets)-1)]
+
+    # Load into context dict
+    context_dict ={}
+    #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
+    context_dict['tweet'] = tweet
 
     if request.is_ajax:
 
@@ -58,7 +80,6 @@ def judge(request):
             elif(inputJudgement = o):
 
                 #handle skip
-
 
     return render(request, 'app/judgement.html', context=context_dict)
 
