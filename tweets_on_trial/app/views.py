@@ -4,6 +4,7 @@ from app.forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from app.models import Tweet, TweetResults
 
 def index(request):
     # Construct a dictionary to pass to the template engine as its context.
@@ -15,7 +16,11 @@ def index(request):
     return render(request, 'app/index.html', context=context_dict)
 
 def judge(request):
-    return HttpResponse("JUDGE")
+    #get a random tweet from the database and send it in the context dict
+    context_dict ={}
+    obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
+    context_dict['tweet'] = obj
+    return render(request, 'app/judgement.html', context=context_dict)
 
 def register(request):
     registered = False
