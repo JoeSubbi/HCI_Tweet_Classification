@@ -38,17 +38,14 @@ def get_map(tweet):
     x1 = n["aggressive"]
     y1 = n["offensive"]
     
-    d = {'col1': [0, 1], 'col2': [0, 1]}
+    d = {'Aggressive': [0, 1], 'Offensive': [0, 1]}
     path = f"app/media/graphs/map/{tweet.id}_map.html"
     
-    fig = px.scatter(data_frame = d, x=[x1], y=[y1], title="Aggression - Offensive graph")
-    fig.update_layout(yaxis_range=[-1,1])
-    fig.update_layout(xaxis_range=[-1,1])
-    fig.update_traces(marker_size=20)
-    fig.update_traces(marker_color='red')
+    # create and format scatter plot
+    fig = px.scatter(data_frame = d, x=[x1], y=[y1], title="Is this Tweet More Aggressive or Offensive?", labels=dict(x="Aggressive", y="Offensive"))
+    fig.update_layout(yaxis_range=[0,1], xaxis_range=[0,1], title_font_size=35, title_xanchor="left", paper_bgcolor="#b4e1f5")
+    fig.update_traces(marker_size=20, marker_color='red')
     
-    #fig.update_traces(text=tweet.body, selector=dict(type='scatter'))
-    #fig.show()
     fig.write_html(path, full_html=False, include_plotlyjs='cdn')
 
 
@@ -56,15 +53,15 @@ def get_map(tweet):
 def get_bar(tweet):
     id = tweet.id
     r = TweetResults.objects.filter(tweet=tweet)[0]
-    x = ["Positive", "Neutral", "Aggressive", "Offensive"]
-    y = [r.positive, r.neutral, r.aggressive, r.offensive]
-
-    plt.title("Summary of opinions on this tweet")
-    plt.ylabel("Number of votes")
-    plt.xlabel("Category")
-    plt.bar(x, y)
-    plt.savefig(f"app/media/graphs/bar/{tweet.id}_bar")
-    plt.clf()
+    x_list = ["Positive", "Neutral", "Aggressive", "Offensive"]
+    y_list = [r.positive, r.neutral, r.aggressive, r.offensive]
+    
+    # create bar chart
+    fig = px.bar(x=x_list, y=y_list, title="Summary of Opinions on this Tweet", labels=dict(x="Category", y="Number of Votes"), color=['#2ca02c', '#778899','#1f77b4',  '#dc143c'], color_discrete_map="identity")
+    fig.update_layout(title_font_size=35, title_xanchor="left", paper_bgcolor="#b4e1f5")
+    
+    fig.write_html(f"app/media/graphs/bar/{tweet.id}_bar.html", full_html=False, include_plotlyjs='cdn')
+    
 
 if __name__ == '__main__':
     for t in  Tweet.objects.all():
