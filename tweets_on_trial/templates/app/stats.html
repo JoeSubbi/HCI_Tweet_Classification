@@ -1,0 +1,19 @@
+{% extends 'app/base.html' %}
+{% load static %} 
+{% block body_block %}
+
+    {% if tweet %}
+        <p>{{ tweet.body }}</p>
+    {% else %}
+        <p>No tweet found</p>
+    {% endif %}
+
+    {% if results %}
+        <p>{{ results.sum }} have voted on this tweet</p>
+    {% else %}
+        <p>No results found</p>
+    {% endif %}
+    
+    <a href="{% url 'app:judge' %}" class="btn">Judge next tweet</a>
+    
+{% endblock %}
