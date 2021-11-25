@@ -17,8 +17,8 @@ class TweetResults(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
     positive  = models.IntegerField(default=0)
     neutral   = models.IntegerField(default=0)
-    aggressive = models.IntegerField(default=0)
-    offensive = models.IntegerField(default=0)
+    aggressive = models.FloatField(default=0)
+    offensive = models.FloatField(default=0)
 
     valid = models.BooleanField(default=False)
 
@@ -60,19 +60,24 @@ class TweetResults(models.Model):
 
     def incrementPos(self):
         self.positive+=1
+        self.save()
 
     def incrementNeut(self):
         self.neutral+=1
+        self.save()
 
     def incrementOff(self):
         self.offensive+=1
+        self.save()
 
     def incrementAgg(self):
         self.aggressive+=1
+        self.save()
 
     def incrementBoth(self):
         self.offensive+=0.5
         self.aggressive+=0.5
+        self.save()
 
     def normalise(self):
         # positive = 0
@@ -120,6 +125,7 @@ class UserTweetHistory(models.Model):
         max_length=20,
         choices=Judgement.choices,
         default=Judgement.NEUTRAL,
+        tweet-save
     )
 
     def addPos(inUser, tweetHist):
@@ -151,3 +157,4 @@ class UserTweetHistory(models.Model):
         user = inUser
         tweet = tweetHist
         judgement = "Skipped"
+

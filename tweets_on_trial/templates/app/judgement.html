@@ -1,13 +1,11 @@
-
 {% extends 'app/base.html' %}
 {% load static %}
-{%block body_block%}
 
 
+
+{% block body_block %}
 <script src="{% static 'js/Swipe.js' %}"
             crossorigin="anonymous"></script>
-
-    
     
     <div style="background-color: rgb(43, 99, 255); text-align: center; margin: 100px;">
             <button style = 'background-color: #4CAF50;' class="btn" id="left" type="button" name="left_btn" value="Positive" onclick="leftFunction()">Positive</button>
@@ -28,7 +26,9 @@
                 </blockquote>
                 </div>
             </div>
+
             <button style = 'background-color: #e7e7e7;' class="btn" id="down" type="button" name="up_btn" value="Skip" onclick="downFunction()">Skip</button>
+
     </div>
     {% if tweet %}
         <p style="text-align:center;"><a href="{% url 'app:stats' tweet.id %}" class="btn">Go to tweet global results</a></p>
@@ -39,4 +39,3 @@
         </div>
     </footer>
 {% endblock %}
-
