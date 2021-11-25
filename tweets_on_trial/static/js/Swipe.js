@@ -135,15 +135,9 @@ $(document).ready(function () {
 
             confirmBool = this.confirm("You have selected skip, are you sure?")
 
-            if (responseBool) {
+            checkRespnse(confirmBool)
 
-                this.location.reload();
-        
-            } else {
-        
-                resetJudgement();
-        
-            };
+            this.location.reload();
 
             map[40] = false;
 
