@@ -57,6 +57,22 @@ class TweetResults(models.Model):
         elif self.aggressive == m: return "Aggressive"
         elif self.offensive == m: return "Offensive"
 
+    def incrementPos(self):
+        self.positive+=1
+
+    def incrementNeut(self):
+        self.neutral+=1
+
+    def incrementOff(self):
+        self.offensive+=1
+
+    def incrementAgg(self):
+        self.aggressive+=1
+
+    def incrementBoth(self):
+        self.offensive+=0.5
+        self.aggressive+=0.5
+
     def normalise(self):
         # positive = 0
         # neutral = 0.5

@@ -54,35 +54,35 @@ def judge(request):
             if inputJudgement == '1':
 
                 #increment offensive
-                print(1)
+                TweetResults.incrementOff()
 
             elif inputJudgement == '2':
 
                 #increment both
-                print(2)
+                TweetResults.incrementBoth()
 
             elif inputJudgement == '3':
 
                 #increment aggressive
-                print(3)
+                TweetResults.incrementAgg()
 
 
             elif inputJudgement == '4':
 
                 #increment negative only
-                print(4)
+              
 
         else:
 
             if inputJudgement == '1':
 
                 #increment positive
-                print(1)
+                TweetResults.incrementPos()
 
             elif inputJudgement == '2':
 
                 #increment neutral
-                print(2)
+                TweetResults.incrementNeut()
 
 
             elif inputJudgement == '0':
