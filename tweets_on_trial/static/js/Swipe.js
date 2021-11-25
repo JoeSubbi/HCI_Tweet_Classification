@@ -83,11 +83,7 @@ $(document).ready(function () {
 
             map[40] = false;
 
-            inputJudgement = 4
-
-            confirmBool = this.confirm("You have selected negative, neither aggressive nor offensive, confirm or redo?")
-
-            checkRespnse(confirmBool);
+            resetJudgement();
 
             map[40] = false;
 
@@ -121,10 +117,11 @@ $(document).ready(function () {
 
             map[39] = false;
 
+            
             document.getElementById("left").innerHTML = "Offensive";
             document.getElementById("right").innerHTML = "Agressive";
             document.getElementById("up").innerHTML = "Both";
-            document.getElementById("down").innerHTML = "Neither";
+            document.getElementById("down").innerHTML = "Back";
             isNegative = true;
 
             map[39] = false;
@@ -136,9 +133,17 @@ $(document).ready(function () {
 
             inputJudgement = 0;
 
-            confirmBool = this.confirm("You have selected skip, confirm or redo?")
+            confirmBool = this.confirm("You have selected skip, are you sure?")
 
-            checkRespnse(confirmBool);
+            if (responseBool) {
+
+                this.location.reload();
+        
+            } else {
+        
+                resetJudgement();
+        
+            };
 
             map[40] = false;
 
