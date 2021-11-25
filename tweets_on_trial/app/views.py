@@ -46,51 +46,51 @@ def judge(request):
 
     if request.is_ajax:
 
-
         isNegative = request.POST.get('isNegative')
         inputJudgement = request.POST.get('inputJudgement')
 
         if isNegative:
 
-            
             if inputJudgement == '1':
 
                 #increment offensive
                 tweetResults.incrementOff()
-                UserTweetHistory.addOff(user,tweetResults)
-
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Offensive")
+                hist.save()
 
             elif inputJudgement == '2':
 
                 #increment both
                 tweetResults.incrementBoth()
-                UserTweetHistory.addBoth(user, tweetResults)
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Both")
+                hist.save()
 
             elif inputJudgement == '3':
 
                 #increment aggressive
                 tweetResults.incrementAgg()
-                UserTweetHistory.addAgg(user, tweetResults)
-
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Aggressive")
+                hist.save()
         else:
-
             if inputJudgement == '1':
 
                 #increment positive
                 tweetResults.incrementPos()
-                UserTweetHistory.addPos(user, tweetResults)
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Positive")
+                hist.save()
 
             elif inputJudgement == '2':
 
                 #increment neutral
                 tweetResults.incrementNeut()
-                UserTweetHistory.addNeut(user, tweetResults)
-
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Neutral")
+                hist.save()
 
             elif inputJudgement == '0':
 
                 #handle skip
-                UserTweetHistory.addSkip(user, tweetResults)
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Skipped")
+                hist.save()
 
     return render(request, 'app/judgement.html', context=context_dict)
 

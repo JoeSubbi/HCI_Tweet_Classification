@@ -17,8 +17,8 @@ class TweetResults(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
     positive  = models.IntegerField(default=0)
     neutral   = models.IntegerField(default=0)
-    aggressive = models.IntegerField(default=0)
-    offensive = models.IntegerField(default=0)
+    aggressive = models.FloatField(default=0)
+    offensive = models.FloatField(default=0)
 
     valid = models.BooleanField(default=False)
 
@@ -60,19 +60,24 @@ class TweetResults(models.Model):
 
     def incrementPos(self):
         self.positive+=1
+        self.save()
 
     def incrementNeut(self):
         self.neutral+=1
+        self.save()
 
     def incrementOff(self):
         self.offensive+=1
+        self.save()
 
     def incrementAgg(self):
         self.aggressive+=1
+        self.save()
 
     def incrementBoth(self):
         self.offensive+=0.5
         self.aggressive+=0.5
+        self.save()
 
     def normalise(self):
         # positive = 0
@@ -121,33 +126,3 @@ class UserTweetHistory(models.Model):
         choices=Judgement.choices,
         default=Judgement.NEUTRAL,
     )
-
-    def addPos(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Positive"
-
-    def addNeut(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Neutral"
-
-    def addAgg(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Aggressive"
-
-    def addOff(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Offensive"
-
-    def addBoth(user, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Both"
-
-    def addSkip(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Skipped"
