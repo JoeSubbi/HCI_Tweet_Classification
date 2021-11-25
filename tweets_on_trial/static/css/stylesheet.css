@@ -63,24 +63,6 @@ h4 {
     width: 55rem;
 }
 
-.btn#up {
-
-    background-color: #008CBA;
-
-}
-
-.btn#left {
-    background-color: #4CAF50;
-}
-
-.btn#right {
-    background-color: #f44336;
-}
-
-.btn#down {
-    background-color: #e7e7e7;
-}
-
 .btn#submit {
     background-color: #0097DB;
     color: #f9fbfc;
@@ -1112,3 +1094,24 @@ ul {
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+
+div.gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+  }
+  
+  div.gallery:hover {
+    border: 1px solid #777;
+  }
+  
+  div.gallery img {
+    width: 100%;
+    height: auto;
+  }
+  
+  div.desc {
+    padding: 15px;
+    text-align: center;
+  }
