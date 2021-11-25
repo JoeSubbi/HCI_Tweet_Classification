@@ -58,6 +58,7 @@ def judge(request):
                 #increment offensive
                 tweetResults.incrementOff()
                 UserTweetHistory.addOff(user,tweetResults)
+                return redirect()
 
 
             elif inputJudgement == '2':

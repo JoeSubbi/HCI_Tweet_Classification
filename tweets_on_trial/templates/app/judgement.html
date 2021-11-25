@@ -10,9 +10,9 @@
     
     
     <div style="background-color: rgb(43, 99, 255); text-align: center; margin: 100px;">
-            <button class="btn" id="left" type="button" name="left_btn" value="Positive" onclick="leftFunction()">Positive</button>
-            <button class="btn" id="up" type="button" name="up_btn" value="Neutral" onclick="upFunction()">Neutral</button>
-            <button class="btn" id="right" type="button" name="right_btn" value="Negative" onclick="rightFunction()">Negative</button>
+            <button style = 'background-color: #4CAF50;' class="btn" id="left" type="button" name="left_btn" value="Positive" onclick="leftFunction()">Positive</button>
+            <button style = 'background-color: #008CBA;' class="btn" id="up" type="button" name="up_btn" value="Neutral" onclick="upFunction()">Neutral</button>
+            <button style = 'background-color: #f44336;' class="btn" id="right" type="button" name="right_btn" value="Negative" onclick="rightFunction()">Negative</button>
             <div class="card">
                 <div class="card-header">
                 Tweet
@@ -28,7 +28,7 @@
                 </blockquote>
                 </div>
             </div>
-            <button class="btn" id="down" type="button" name="up_btn" value="Skip" onclick="downFunction()">Skip</button>
+            <button style = 'background-color: #e7e7e7;' class="btn" id="down" type="button" name="up_btn" value="Skip" onclick="downFunction()">Skip</button>
     </div>
     {% if tweet %}
         <p style="text-align:center;"><a href="{% url 'app:stats' tweet.id %}" class="btn">Go to tweet global results</a></p>
