@@ -56,7 +56,7 @@ def judge(request):
                 #increment offensive
                 tweetResults.incrementOff()
                 hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Offensive")
-                hist.save()
+                return redirect()
 
             elif inputJudgement == '2':
 

@@ -125,4 +125,36 @@ class UserTweetHistory(models.Model):
         max_length=20,
         choices=Judgement.choices,
         default=Judgement.NEUTRAL,
+        tweet-save
     )
+
+    def addPos(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Positive"
+
+    def addNeut(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Neutral"
+
+    def addAgg(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Aggressive"
+
+    def addOff(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Offensive"
+
+    def addBoth(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Both"
+
+    def addSkip(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Skipped"
+
