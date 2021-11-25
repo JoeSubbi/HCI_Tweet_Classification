@@ -296,7 +296,15 @@ function sendData() {
 
         success: function (response) {
 
+            
+
             console.info("success")
+
+            if (response.redirect==true){
+
+                window.location.href = response.redirect_url;
+
+            };
 
         },
 

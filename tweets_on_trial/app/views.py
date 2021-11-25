@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from app.forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from app.models import Tweet, TweetResults, UserTweetHistory
 from datetime import datetime, timedelta
 from random import randint
+import json
 
 def index(request):
     # Construct a dictionary to pass to the template engine as its context.
@@ -58,7 +59,11 @@ def judge(request):
                 #increment offensive
                 tweetResults.incrementOff()
                 UserTweetHistory.addOff(user,tweetResults)
-                return redirect()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
 
             elif inputJudgement == '2':
