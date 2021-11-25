@@ -142,7 +142,7 @@ class UserTweetHistory(models.Model):
         tweet = tweetHist
         judgement = "Offensive"
 
-    def addBoth(user, tweetHist):
+    def addBoth(inUser, tweetHist):
         user = inUser
         tweet = tweetHist
         judgement = "Both"

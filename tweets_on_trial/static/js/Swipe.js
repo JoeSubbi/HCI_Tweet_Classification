@@ -33,10 +33,112 @@ var csrftoken = getCookie('csrftoken');
 var isNegative = false;
 var inputJudgement;
 
+function leftFunction() {
+
+    var confirmBool = false;
+    
+    if(isNegative){
+
+        inputJudgement = 1;
+
+        confirmBool = this.confirm("You have selected negative, offensive, confirm or redo?")
+
+        checkRespnse(confirmBool);
+
+    }else{
+
+        inputJudgement = 1;
+
+        confirmBool = this.confirm("You have selected positive, confirm or redo?")
+
+        checkRespnse(confirmBool);
+
+    }
+
+};
+
+function upFunction() {
+
+    var confirmBool = false;
+    
+    if(isNegative){
+
+        inputJudgement = 2;
+
+        confirmBool = this.confirm("You have selected negative, both offensive and agrressive, confirm or redo?")
+
+        checkRespnse(confirmBool);
+
+    }else{
+
+        inputJudgement = 2;
+
+        confirmBool = this.confirm("You have selected neutral, confirm or redo?")
+
+        checkRespnse(confirmBool);
+
+    }
+
+};
+
+function downFunction() {
+
+    var confirmBool = false;
+    
+    if(isNegative){
+
+        resetJudgement();
+       
+    }else{
+
+        inputJudgement = 0;
+
+        confirmBool = this.confirm("You have selected skip, do you wish to skip?")
+
+        if (confirmBool) {
+
+            sendData();
+            this.location.reload();
+    
+        } else {
+    
+            resetJudgement();
+    
+        };
+
+    }
+
+};
+
+function rightFunction() {
+
+    var confirmBool = false;
+    
+    if(isNegative){
+
+        inputJudgement = 3;
+
+        confirmBool = this.confirm("You have selected negative, agrressive, confirm or redo?")
+
+        checkRespnse(confirmBool);
+
+    }else{
+
+        document.getElementById("left").innerHTML = "Offensive";
+        document.getElementById("right").innerHTML = "Agressive";
+        document.getElementById("up").innerHTML = "Both";
+        document.getElementById("down").innerHTML = "Back";
+        isNegative = true;
+
+    };
+
+};
+
 $(document).ready(function () {
 
     var map = {};
     var confirmBool = false;
+
     onkeydown = onkeyup = function (e) {
         e = e || event; // to deal with IE
         map[e.keyCode] = e.type == 'keydown';
@@ -135,9 +237,18 @@ $(document).ready(function () {
 
             confirmBool = this.confirm("You have selected skip, are you sure?")
 
-            checkRespnse(confirmBool)
+            if (confirmBool) {
 
-            this.location.reload();
+                sendData();
+                this.location.reload();
+        
+            } else {
+        
+                resetJudgement();
+        
+            };
+
+            
 
             map[40] = false;
 
@@ -168,7 +279,7 @@ function resetJudgement() {
     document.getElementById("right").innerHTML = "Negative";
     document.getElementById("up").innerHTML = "Neutral";
     document.getElementById("down").innerHTML = "Skip";
-    isNegative = flase;
+    isNegative = false;
 
 }
 
