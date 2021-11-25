@@ -18,7 +18,8 @@ def index(request):
     return render(request, 'app/index.html', context=context_dict)
 
 def judge(request):
-    # Tweets user has already voted on
+
+       # Tweets user has already voted on
     user = request.user
     if user.is_anonymous:
         return HttpResponse("Not logged in")
@@ -40,6 +41,57 @@ def judge(request):
     context_dict ={}
     #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
     context_dict['tweet'] = tweet
+    tweetResults = TweetResults.objects.get(tweet=tweet.id)
+    
+
+    if request.is_ajax:
+
+
+        isNegative = request.POST.get('isNegative')
+        inputJudgement = request.POST.get('inputJudgement')
+
+        if isNegative:
+
+            
+            if inputJudgement == '1':
+
+                #increment offensive
+                tweetResults.incrementOff()
+                UserTweetHistory.addOff(user,tweetResults)
+
+
+            elif inputJudgement == '2':
+
+                #increment both
+                tweetResults.incrementBoth()
+                UserTweetHistory.addBoth(user, tweetResults)
+
+            elif inputJudgement == '3':
+
+                #increment aggressive
+                tweetResults.incrementAgg()
+                UserTweetHistory.addAgg(user, tweetResults)
+
+        else:
+
+            if inputJudgement == '1':
+
+                #increment positive
+                tweetResults.incrementPos()
+                UserTweetHistory.addPos(user, tweetResults)
+
+            elif inputJudgement == '2':
+
+                #increment neutral
+                tweetResults.incrementNeut()
+                UserTweetHistory.addNeut(user, tweetResults)
+
+
+            elif inputJudgement == '0':
+
+                #handle skip
+                UserTweetHistory.addSkip(user, tweetResults)
+
     return render(request, 'app/judgement.html', context=context_dict)
 
 def stats(request, tweet_id):
@@ -95,3 +147,4 @@ def user_logout(request):
     logout(request)
 
     return redirect(reverse('app:index'))
+

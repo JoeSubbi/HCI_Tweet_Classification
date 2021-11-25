@@ -63,6 +63,24 @@ h4 {
     width: 55rem;
 }
 
+.btn#up {
+
+    background-color: #008CBA;
+
+}
+
+.btn#left {
+    background-color: #4CAF50;
+}
+
+.btn#right {
+    background-color: #f44336;
+}
+
+.btn#down {
+    background-color: #e7e7e7;
+}
+
 .btn#submit {
     background-color: #0097DB;
     color: #f9fbfc;
