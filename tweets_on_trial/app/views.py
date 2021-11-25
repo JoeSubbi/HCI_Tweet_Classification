@@ -7,14 +7,21 @@ from django.contrib.auth.decorators import login_required
 from app.models import Tweet, TweetResults, UserTweetHistory
 from datetime import datetime, timedelta
 from random import randint
+import graphs 
 
 def index(request):
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage matches to {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': 'ANALYTICS'}
+    context_dict = {}
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
+    graphs.get_total()
+    with open("app/media/graphs/analytics/total_bar.html","r") as f:
+        graph_html = f.read()
+
+    context_dict['totalbar'] = graph_html
+    
     return render(request, 'app/index.html', context=context_dict)
 
 def judge(request):
@@ -101,6 +108,11 @@ def stats(request, tweet_id):
         context_dict = {}
         context_dict['tweet'] = tweet
         context_dict['results'] = results
+        
+        for t in  Tweet.objects.all():
+            graphs.get_map(t)
+            graphs.get_bar(t)  
+        
         return render(request, 'app/stats.html', context=context_dict)
     except Tweet.DoesNotExist:
         return HttpResponse("Tweet statistics not found")
