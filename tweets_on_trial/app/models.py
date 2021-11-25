@@ -110,6 +110,8 @@ class UserTweetHistory(models.Model):
         NEUTRAL    = "Neutral"
         OFFENSIVE  = "Offensive"
         AGGRESSIVE = "Aggressive"
+        BOTH = "Both"
+        SKIP = "Skipped"
 
     user  = models.ForeignKey(User, on_delete=models.CASCADE)
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
@@ -119,3 +121,33 @@ class UserTweetHistory(models.Model):
         choices=Judgement.choices,
         default=Judgement.NEUTRAL,
     )
+
+    def addPos(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Positive"
+
+    def addNeut(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Neutral"
+
+    def addAgg(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Aggressive"
+
+    def addOff(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Offensive"
+
+    def addBoth(user, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Both"
+
+    def addSkip(inUser, tweetHist):
+        user = inUser
+        tweet = tweetHist
+        judgement = "Skipped"

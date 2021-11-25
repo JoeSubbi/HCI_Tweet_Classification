@@ -42,6 +42,7 @@ def judge(request):
     #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
     context_dict['tweet'] = tweet
     tweetResults = TweetResults.objects.get(tweet=tweet.id)
+    
 
     if request.is_ajax:
 
@@ -51,21 +52,25 @@ def judge(request):
 
         if isNegative:
 
-            print("test")
+            
             if inputJudgement == '1':
 
                 #increment offensive
                 tweetResults.incrementOff()
+                UserTweetHistory.addOff(user,tweetResults)
+
 
             elif inputJudgement == '2':
 
                 #increment both
                 tweetResults.incrementBoth()
+                UserTweetHistory.addBoth(user, tweetResults)
 
             elif inputJudgement == '3':
 
                 #increment aggressive
                 tweetResults.incrementAgg()
+                UserTweetHistory.addAgg(user, tweetResults)
 
         else:
 
@@ -73,17 +78,19 @@ def judge(request):
 
                 #increment positive
                 tweetResults.incrementPos()
+                UserTweetHistory.addPos(user, tweetResults)
 
             elif inputJudgement == '2':
 
                 #increment neutral
                 tweetResults.incrementNeut()
+                UserTweetHistory.addNeut(user, tweetResults)
 
 
             elif inputJudgement == '0':
 
                 #handle skip
-                print(0)
+                UserTweetHistory.addSkip(user, tweetResults)
 
     return render(request, 'app/judgement.html', context=context_dict)
 
