@@ -13,6 +13,9 @@ body {
     margin: 0px;
     padding: 0px;
     background-color: #f3f7f7;
+    background-image: url('/static/images/twitter.jpg');
+    background-color: rgba(255,255,255,0.65);
+    background-blend-mode: lighten;
 }
 
 .row {
