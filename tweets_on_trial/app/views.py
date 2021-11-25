@@ -42,6 +42,18 @@ def judge(request):
     context_dict['tweet'] = tweet
     return render(request, 'app/judgement.html', context=context_dict)
 
+def stats(request, tweet_id):
+    try:
+        tweet = Tweet.objects.get(id=tweet_id)
+        results = TweetResults.objects.get(id=tweet_id)
+        context_dict = {}
+        context_dict['tweet'] = tweet
+        context_dict['results'] = results
+        return render(request, 'app/stats.html', context=context_dict)
+    except Tweet.DoesNotExist:
+        return HttpResponse("Tweet statistics not found")
+
+
 def register(request):
     registered = False
     if request.method == 'POST':
