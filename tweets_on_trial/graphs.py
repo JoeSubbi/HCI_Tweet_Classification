@@ -5,19 +5,13 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 import django
 django.setup()
 from app.models import Tweet, TweetResults
-
-import datetime
-import matplotlib.pyplot as plt
-
 from plotly.offline import plot
 import plotly.graph_objects as go # bar chart import
 import plotly.express as px
-import pandas as pd
 import pyautogui
 
 # Bar chart of total tweets
 def get_total():
-    tweets = Tweet.objects.all()
     results = TweetResults.objects.all()
 
     width, height= pyautogui.size()
@@ -40,6 +34,7 @@ def get_total():
 def get_map(tweet):
     id = tweet.id
     n = TweetResults.objects.filter(tweet=tweet)[0].normalise()
+    tweet_body = Tweet.objects.get(id=tweet.id).body
     
     width, height= pyautogui.size()
 
@@ -51,8 +46,8 @@ def get_map(tweet):
     
     # create and format scatter plot
     fig = px.scatter(data_frame = d, x=[x1], y=[y1], title="Is this Tweet More Aggressive than Offensive?", labels=dict(x="Aggressive", y="Offensive"), width=width/2)
-    fig.update_layout(yaxis_range=[0,1], xaxis_range=[0,1], title_font_size=25, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)")
-    fig.update_traces(marker_size=20, marker_color='red')
+    fig.update_layout(yaxis_range=[0,1], xaxis_range=[0,1], title_font_size=25, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)", hovermode=None)
+    fig.update_traces(marker_size=20, marker_color='red', hovertemplate=[tweet_body])
     
     fig.write_html(path, full_html=False, include_plotlyjs='cdn')
 
