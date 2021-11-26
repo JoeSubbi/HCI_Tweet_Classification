@@ -1,9 +1,35 @@
 {% extends 'app/base.html' %}
 {% load static %} 
 {% block body_block %}
-    {% if user.is_authenticated %}
-        hello {{ user.username }}
-    {% else %}
-        hello
-    {% endif %}
+
+<div style="margin: 70px;">
+<h1>Tutorial</h1>
+<div class="gallery" style="border: 2px solid black;">
+    <a target="_blank" href="{% static 'images/Sign Up.png' %}">
+      <img src="{% static 'images/Sign Up.png' %}" alt="Cinque Terre" width="3000" height="2000">
+    </a>
+    <div class="desc" style="background-color: rgb(114, 187, 247); color: rgb(41, 39, 39);">First things first, register yourself by making an account!</div>
+  </div>
+  
+  <div class="gallery" style="border: 2px solid black;">
+    <a target="_blank" href="{% static 'images/Home.png' %}">
+      <img src="{% static 'images/Home.png' %}" alt="Forest" width="3000" height="2000">
+    </a>
+    <div class="desc" style="background-color: rgb(114, 187, 247); color: rgb(41, 39, 39);">Once you create an account, start judging tweets.</div>
+  </div>
+  
+  <div class="gallery" style="border: 2px solid black;">
+    <a target="_blank" href="{% static 'images/Judge.png' %}">
+      <img src="{% static 'images/Judge.png' %}" alt="Mountains" width="3000" height="2000">
+    </a>
+    <div class="desc" style="background-color: rgb(114, 187, 247); color: rgb(41, 39, 39);">Let us know if the tweet you've been shown is abusive</div>
+  </div>
+
+  <div class="gallery" style="border: 2px solid black;">
+    <a target="_blank" href="{% static 'images/Graphs.png' %}">
+      <img src="{% static 'images/Graphs.png' %}" alt="Northern Lights" width="3000" height="2000">
+    </a>
+    <div class="desc" style="background-color: rgb(114, 187, 247); color: rgb(41, 39, 39);">You can checkout site statistics on the analytics page</div>
+  </div>
+  </div>
 {% endblock %}

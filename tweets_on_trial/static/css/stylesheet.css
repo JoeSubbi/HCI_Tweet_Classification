@@ -13,6 +13,9 @@ body {
     margin: 0px;
     padding: 0px;
     background-color: #f3f7f7;
+    background-image: url('/static/images/twitter.jpg');
+    background-color: rgba(255,255,255,0.65);
+    background-blend-mode: lighten;
 }
 
 .row {
@@ -61,24 +64,6 @@ h4 {
     margin-left: auto;
     margin-right: auto;
     width: 55rem;
-}
-
-.btn#up {
-
-    background-color: #008CBA;
-
-}
-
-.btn#left {
-    background-color: #4CAF50;
-}
-
-.btn#right {
-    background-color: #f44336;
-}
-
-.btn#down {
-    background-color: #e7e7e7;
 }
 
 .btn#submit {
