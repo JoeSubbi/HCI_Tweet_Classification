@@ -4,7 +4,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 
 import django
 django.setup()
-from app.models import Tweet, TweetResults
+from app.models import Tweet, TweetResults, UserTweetHistory
 
 import datetime
 
@@ -13,6 +13,7 @@ def populate():
     #deletes all objects from Car database table
     Tweet.objects.all().delete()
     TweetResults.objects.all().delete()
+    UserTweetHistory.objects.all().delete()
 
     tweets = [
         {"body":"I'm so fucking happy",  

@@ -23,7 +23,8 @@ class TweetResults(models.Model):
     valid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"\tPositive:  {self.positive}\n"\
+        return f"{self.tweet.body}"\
+               f"\tPositive:  {self.positive}\n"\
                f"\tNeutral:   {self.neutral}\n"\
                f"\tAggressive: {self.aggressive}\n"\
                f"\tOffensive: {self.offensive}"
@@ -90,13 +91,6 @@ class TweetResults(models.Model):
         return {"positive":self.positive/total, "neutral":self.neutral/total,
                 "aggressive":self.aggressive/total, "offensive":self.offensive/total}
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    count = models.IntegerField(default=0) # tweets judged
-
-    def __str__(self):
-        return self.user.username
-
 @receiver(post_save, sender=TweetResults)
 def update(sender, instance, created, **kwargs):
     if instance.sum() >= 5:
@@ -107,7 +101,13 @@ def update(sender, instance, created, **kwargs):
     instance.save()
     post_save.connect(update, sender=TweetResults)
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0) # tweets judged
 
+    def __str__(self):
+        return self.user.username
+        
 class UserTweetHistory(models.Model):
 
     class Judgement(models.TextChoices):
@@ -126,34 +126,4 @@ class UserTweetHistory(models.Model):
         choices=Judgement.choices,
         default=Judgement.NEUTRAL,
     )
-
-    def addPos(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Positive"
-
-    def addNeut(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Neutral"
-
-    def addAgg(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Aggressive"
-
-    def addOff(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Offensive"
-
-    def addBoth(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Both"
-
-    def addSkip(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Skipped"
 

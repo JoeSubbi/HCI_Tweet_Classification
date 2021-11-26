@@ -43,7 +43,8 @@ def judge(request):
     context_dict ={}
     #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
     context_dict['tweet'] = tweet
-    tweetResults = TweetResults.objects.get(tweet=tweet.id)
+    tweetResults = TweetResults.objects.get(tweet=tweet)
+    print(tweet)
     
 
     if request.is_ajax:
@@ -129,7 +130,7 @@ def judge(request):
 def stats(request, tweet_id):
     try:
         tweet = Tweet.objects.get(id=tweet_id)
-        results = TweetResults.objects.get(id=tweet_id)
+        results = TweetResults.objects.get(tweet=tweet)
         context_dict = {}
         context_dict['tweet'] = tweet
         context_dict['results'] = results
