@@ -14,6 +14,18 @@
         <p>No results found</p>
     {% endif %}
     
+    
+    
+    <div class="row">
+        <div class="column">
+            {{ barchart | safe }}
+        </div>
+        <div class="column">
+            {{ scatterplot | safe }} 
+        </div>
+    </div>
+
+
     <a href="{% url 'app:judge' %}" class="btn">Judge next tweet</a>
     
 {% endblock %}

@@ -113,6 +113,15 @@ def stats(request, tweet_id):
             graphs.get_map(t)
             graphs.get_bar(t)  
         
+        with open(f"app/media/graphs/bar/{tweet.id}_bar.html","r") as f:
+            bar_html = f.read()
+
+        with open(f"app/media/graphs/map/{tweet.id}_map.html","r") as f:
+            map_html = f.read()
+            
+        context_dict['barchart'] = bar_html
+        context_dict['scatterplot'] = map_html
+        
         return render(request, 'app/stats.html', context=context_dict)
     except Tweet.DoesNotExist:
         return HttpResponse("Tweet statistics not found")
