@@ -57,6 +57,7 @@ def judge(request):
                 #increment offensive
                 tweetResults.incrementOff()
                 hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Offensive")
+                hist.save()
                 response = {    'redirect': True,
                                 'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
                                 }
@@ -69,6 +70,11 @@ def judge(request):
                 tweetResults.incrementBoth()
                 hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Both")
                 hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
             elif inputJudgement == '3':
 
@@ -76,6 +82,11 @@ def judge(request):
                 tweetResults.incrementAgg()
                 hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Aggressive")
                 hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
         else:
             if inputJudgement == '1':
 
@@ -83,6 +94,11 @@ def judge(request):
                 tweetResults.incrementPos()
                 hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Positive")
                 hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
             elif inputJudgement == '2':
 
@@ -90,12 +106,22 @@ def judge(request):
                 tweetResults.incrementNeut()
                 hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Neutral")
                 hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
             elif inputJudgement == '0':
 
                 #handle skip
                 hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Skipped")
                 hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
     return render(request, 'app/judgement.html', context=context_dict)
 

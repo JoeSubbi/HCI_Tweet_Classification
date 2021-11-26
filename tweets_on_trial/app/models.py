@@ -125,7 +125,6 @@ class UserTweetHistory(models.Model):
         max_length=20,
         choices=Judgement.choices,
         default=Judgement.NEUTRAL,
-        tweet-save
     )
 
     def addPos(inUser, tweetHist):
