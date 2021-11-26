@@ -31,7 +31,7 @@ def judge(request):
     # Tweets within past 5 days
     DAYS = 10
     past = datetime.now() - timedelta(days=DAYS)
-    tweets = Tweet.objects.exclude(id__in=[t.id for t in tweets]).filter(date__gte=past)
+    tweets = Tweet.objects.exclude(id__in=[t.tweet.id for t in tweets]).filter(date__gte=past)
     
     if len(tweets) == 0:
         return HttpResponse("No more tweets right now, come back later")

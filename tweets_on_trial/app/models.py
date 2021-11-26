@@ -107,7 +107,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
-        
+
 class UserTweetHistory(models.Model):
 
     class Judgement(models.TextChoices):
@@ -126,4 +126,7 @@ class UserTweetHistory(models.Model):
         choices=Judgement.choices,
         default=Judgement.NEUTRAL,
     )
+
+    def __str__(self):
+        return f"{self.tweet.body} - {self.judgement}"
 
