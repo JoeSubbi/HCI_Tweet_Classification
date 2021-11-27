@@ -45,6 +45,7 @@ def judge(request):
     context_dict['tweet'] = tweet
     tweetResults = TweetResults.objects.get(tweet=tweet.id)
     
+    print(tweet.id)
 
     if request.is_ajax:
 
