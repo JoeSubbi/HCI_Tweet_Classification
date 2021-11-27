@@ -31,7 +31,7 @@ def judge(request):
     # Tweets within past 5 days
     DAYS = 10
     past = datetime.now() - timedelta(days=DAYS)
-    tweets = Tweet.objects.exclude(id__in=[t.id for t in tweets]).filter(date__gte=past)
+    tweets = Tweet.objects.exclude(id__in=[t.tweet.id for t in tweets]).filter(date__gte=past)
     
     if len(tweets) == 0:
         return HttpResponse("No more tweets right now, come back later")
@@ -43,7 +43,8 @@ def judge(request):
     context_dict ={}
     #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
     context_dict['tweet'] = tweet
-    tweetResults = TweetResults.objects.get(tweet=tweet.id)
+    tweetResults = TweetResults.objects.get(tweet=tweet)
+    print(tweet)
     
     print(tweet.id)
 
@@ -130,7 +131,7 @@ def judge(request):
 def stats(request, tweet_id):
     try:
         tweet = Tweet.objects.get(id=tweet_id)
-        results = TweetResults.objects.get(id=tweet_id)
+        results = TweetResults.objects.get(tweet=tweet)
         context_dict = {}
         context_dict['tweet'] = tweet
         context_dict['results'] = results
