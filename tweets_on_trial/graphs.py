@@ -36,7 +36,7 @@ def get_map(tweet):
     id = tweet.id
     
     # rated tweet data collection 
-    n = TweetResults.objects.filter(tweet=tweet)[0].normalise()
+    n = TweetResults.objects.filter(tweet=tweet)[0].normalise().copy()
     tweet_body = Tweet.objects.get(id=tweet.id).body
     
     # other tweets data collection
@@ -45,7 +45,7 @@ def get_map(tweet):
 
     for results in TweetResults.objects.all():
 
-        tweet_results_list.append(results.normalise())
+        tweet_results_list.append(results.normalise().copy())
 
         tweet_body_list.append(Tweet.objects.get(id = results.id).body)
 
@@ -71,7 +71,7 @@ def get_map(tweet):
     
     # adding data to scatter plot
     fig.add_trace(go.Scatter(x=[n["aggressive"]], y=[n["offensive"]], mode="markers", name="Rated Tweet", hovertemplate=tweet_body, marker_color="crimson"))
-    fig.add_trace(go.Scatter(x=aggressive_list, y=offensive_list, mode="markers", name="Other Tweets", hovertemplate=tweet_body_list, marker_color="#a7e3eb"))
+    fig.add_trace(go.Scatter(x=aggressive_list, y=offensive_list, mode="markers", name="Other Tweets", hovertemplate=tweet_body_list, marker_color="#D3D3D3"))
     fig.update_traces(marker_size=20)
     fig.update_xaxes(title_text="Aggressive")
     fig.update_yaxes(title_text="Offensive")
