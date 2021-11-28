@@ -23,7 +23,7 @@ def get_total():
         else: d[m] = 1
     
     fig = px.bar(x=list(d.keys()), y=list(d.values()), title="Model Opinion of All Categorised Tweets", labels=dict(x="Category", y="Number of Tweets"),
-                 color=['#2ca02c', '#dc143c','#1f77b4', '#778899', '#ffa500'], color_discrete_map="identity")
+                 color=['#87de5f','#1f77b4', '#ed6b6b', '#ababab', '#f0a259'], color_discrete_map="identity")
     fig.update_layout(title_font_size=35, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)", width=width/1.5)
     
     fig.write_html("app/media/graphs/analytics/total_bar.html", full_html=False, include_plotlyjs='cdn')
