@@ -30,26 +30,53 @@ def get_total():
 
 
 
-# Compass of a single tweet
+# Compass of a single tweet, compared against others
 def get_map(tweet):
     id = tweet.id
+    
+    # rated tweet data collection 
     n = TweetResults.objects.filter(tweet=tweet)[0].normalise()
     tweet_body = Tweet.objects.get(id=tweet.id).body
     
-    width, height= pyautogui.size()
-
-    x1 = n["aggressive"]
-    y1 = n["offensive"]
-    
-    d = {'Aggressive': [0, 1], 'Offensive': [0, 1]}
-    path = f"app/media/graphs/map/{tweet.id}_map.html"
+    # other tweets data collection
+    tweet_results_list = []
+    tweet_body_list = []
+    if id <= 5:
+        for i in range(6):
+            tweet_results_list.append(TweetResults.objects.all()[:6][i].normalise())
+            tweet_body_list.append(Tweet.objects.get(id=i+1).body)
+            
+        tweet_results_list.remove(n)
+        tweet_body_list.remove(tweet_body)
+    else:
+        for i in range(5):
+            tweet_results_list.append(TweetResults.objects.all()[:5][i].normalise())
+            tweet_body_list.append(Tweet.objects.get(id=i+1).body)
+           
+    aggressive_list = []
+    offensive_list = []
+    for i in range(len(tweet_results_list)):
+        aggressive_list.append(tweet_results_list[range(len(tweet_results_list))[i]]["aggressive"])
+        offensive_list.append(tweet_results_list[range(len(tweet_results_list))[i]]["offensive"])
     
     # create and format scatter plot
-    fig = px.scatter(data_frame = d, x=[x1], y=[y1], title="Is this Tweet More Aggressive than Offensive?", labels=dict(x="Aggressive", y="Offensive"), width=width/2)
-    fig.update_layout(yaxis_range=[0,1], xaxis_range=[0,1], title_font_size=25, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)", hovermode=None)
-    fig.update_traces(marker_size=20, marker_color='red', hovertemplate=[tweet_body])
+    width, height = pyautogui.size()
+    d = {'Aggressive': [0, 1], 'Offensive': [0, 1]}
     
-    fig.write_html(path, full_html=False, include_plotlyjs='cdn')
+    fig = px.scatter(title="Is the Tweet More Aggressive than Offensive?", width=width/2)
+    fig.update_layout(yaxis_range=[0,1], xaxis_range=[0,1], title_font_size=25, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)", 
+                      hovermode=None)
+    
+    # adding data to scatter plot
+    fig.add_trace(go.Scatter(x=[n["aggressive"]], y=[n["offensive"]], mode="markers", name="Rated Tweet", hovertemplate=tweet_body, marker_color="crimson"))
+    fig.add_trace(go.Scatter(x=aggressive_list, y=offensive_list, mode="markers", name="Other Tweets", hovertemplate=tweet_body_list, marker_color="#778899"))
+    fig.update_traces(marker_size=20)
+    fig.update_xaxes(title_text="Aggressive")
+    fig.update_yaxes(title_text="Offensive")
+    
+    
+    
+    fig.write_html(f"app/media/graphs/map/{tweet.id}_map.html", full_html=False, include_plotlyjs='cdn')
 
 
 # Bar chart of single tweet
