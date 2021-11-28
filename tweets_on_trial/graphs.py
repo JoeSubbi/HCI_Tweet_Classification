@@ -69,7 +69,7 @@ def get_map(tweet):
     
     # adding data to scatter plot
     fig.add_trace(go.Scatter(x=[n["aggressive"]], y=[n["offensive"]], mode="markers", name="Rated Tweet", hovertemplate=tweet_body, marker_color="crimson"))
-    fig.add_trace(go.Scatter(x=aggressive_list, y=offensive_list, mode="markers", name="Other Tweets", hovertemplate=tweet_body_list, marker_color="#778899"))
+    fig.add_trace(go.Scatter(x=aggressive_list, y=offensive_list, mode="markers", name="Other Tweets", hovertemplate=tweet_body_list, marker_color="#a7e3eb"))
     fig.update_traces(marker_size=20)
     fig.update_xaxes(title_text="Aggressive")
     fig.update_yaxes(title_text="Offensive")
