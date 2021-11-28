@@ -17,13 +17,14 @@ class TweetResults(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
     positive  = models.IntegerField(default=0)
     neutral   = models.IntegerField(default=0)
-    aggressive = models.IntegerField(default=0)
-    offensive = models.IntegerField(default=0)
+    aggressive = models.FloatField(default=0)
+    offensive = models.FloatField(default=0)
 
     valid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"\tPositive:  {self.positive}\n"\
+        return f"{self.tweet.body}"\
+               f"\tPositive:  {self.positive}\n"\
                f"\tNeutral:   {self.neutral}\n"\
                f"\tAggressive: {self.aggressive}\n"\
                f"\tOffensive: {self.offensive}"
@@ -60,19 +61,24 @@ class TweetResults(models.Model):
 
     def incrementPos(self):
         self.positive+=1
+        self.save()
 
     def incrementNeut(self):
         self.neutral+=1
+        self.save()
 
     def incrementOff(self):
         self.offensive+=1
+        self.save()
 
     def incrementAgg(self):
         self.aggressive+=1
+        self.save()
 
     def incrementBoth(self):
         self.offensive+=0.5
         self.aggressive+=0.5
+        self.save()
 
     def normalise(self):
         # positive = 0
@@ -85,13 +91,6 @@ class TweetResults(models.Model):
         return {"positive":self.positive/total, "neutral":self.neutral/total,
                 "aggressive":self.aggressive/total, "offensive":self.offensive/total}
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    count = models.IntegerField(default=0) # tweets judged
-
-    def __str__(self):
-        return self.user.username
-
 @receiver(post_save, sender=TweetResults)
 def update(sender, instance, created, **kwargs):
     if instance.sum() >= 5:
@@ -102,6 +101,12 @@ def update(sender, instance, created, **kwargs):
     instance.save()
     post_save.connect(update, sender=TweetResults)
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0) # tweets judged
+
+    def __str__(self):
+        return self.user.username
 
 class UserTweetHistory(models.Model):
 
@@ -122,32 +127,6 @@ class UserTweetHistory(models.Model):
         default=Judgement.NEUTRAL,
     )
 
-    def addPos(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Positive"
+    def __str__(self):
+        return f"{self.tweet.body} - {self.judgement}"
 
-    def addNeut(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Neutral"
-
-    def addAgg(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Aggressive"
-
-    def addOff(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Offensive"
-
-    def addBoth(user, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Both"
-
-    def addSkip(inUser, tweetHist):
-        user = inUser
-        tweet = tweetHist
-        judgement = "Skipped"

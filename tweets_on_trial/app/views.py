@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 from app.forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -7,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from app.models import Tweet, TweetResults, UserTweetHistory
 from datetime import datetime, timedelta
 from random import randint
+import json
 
 def index(request):
     # Construct a dictionary to pass to the template engine as its context.
@@ -24,80 +26,122 @@ def judge(request):
     if user.is_anonymous:
         return HttpResponse("Not logged in")
     
-    tweets = UserTweetHistory.objects.filter(user=user)
     
-    # Tweets within past 5 days
-    DAYS = 10
-    past = datetime.now() - timedelta(days=DAYS)
-    tweets = Tweet.objects.exclude(id__in=[t.id for t in tweets]).filter(date__gte=past)
-    
-    if len(tweets) == 0:
-        return HttpResponse("No more tweets right now, come back later")
-
-    # Choose Random
-    tweet = tweets[randint(0, len(tweets)-1)]
-
-    # Load into context dict
-    context_dict ={}
-    #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
-    context_dict['tweet'] = tweet
-    tweetResults = TweetResults.objects.get(tweet=tweet.id)
     
 
-    if request.is_ajax:
+    if request.is_ajax and request.method == 'POST':
 
+        print(request.POST.get('tweetId'))
 
+        tweet = Tweet.objects.get(id =request.POST.get('tweetId'))
         isNegative = request.POST.get('isNegative')
         inputJudgement = request.POST.get('inputJudgement')
 
+        tweetResults = TweetResults.objects.get(tweet=tweet)
+
         if isNegative:
 
-            
             if inputJudgement == '1':
 
                 #increment offensive
                 tweetResults.incrementOff()
-                UserTweetHistory.addOff(user,tweetResults)
-
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Offensive")
+                hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
             elif inputJudgement == '2':
 
                 #increment both
                 tweetResults.incrementBoth()
-                UserTweetHistory.addBoth(user, tweetResults)
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Both")
+                hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
             elif inputJudgement == '3':
 
                 #increment aggressive
                 tweetResults.incrementAgg()
-                UserTweetHistory.addAgg(user, tweetResults)
-
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Aggressive")
+                hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
         else:
-
             if inputJudgement == '1':
 
                 #increment positive
                 tweetResults.incrementPos()
-                UserTweetHistory.addPos(user, tweetResults)
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Positive")
+                hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
             elif inputJudgement == '2':
 
                 #increment neutral
                 tweetResults.incrementNeut()
-                UserTweetHistory.addNeut(user, tweetResults)
-
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Neutral")
+                hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
 
             elif inputJudgement == '0':
 
                 #handle skip
-                UserTweetHistory.addSkip(user, tweetResults)
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Skipped")
+                hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
+
+    else:
+
+        tweets = UserTweetHistory.objects.filter(user=user)
+    
+        # Tweets within past 5 days
+        DAYS = 100
+        past = datetime.now() - timedelta(days=DAYS)
+        tweets = Tweet.objects.exclude(id__in=[t.tweet.id for t in tweets]).filter(date__gte=past)
+        
+        if len(tweets) == 0:
+            return HttpResponse("No more tweets right now, come back later")
+
+        # Choose Random
+        tweet = tweets[randint(0, len(tweets)-1)]
+
+        # Load into context dict
+        context_dict ={}
+        #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
+        context_dict['tweet'] = tweet
+        tweetResults = TweetResults.objects.get(tweet=tweet)
+        print(tweet)
+        
+        print(tweet.id)
 
     return render(request, 'app/judgement.html', context=context_dict)
 
 def stats(request, tweet_id):
     try:
         tweet = Tweet.objects.get(id=tweet_id)
-        results = TweetResults.objects.get(id=tweet_id)
+        results = TweetResults.objects.get(tweet=tweet)
         context_dict = {}
         context_dict['tweet'] = tweet
         context_dict['results'] = results
