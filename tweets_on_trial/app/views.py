@@ -47,7 +47,18 @@ def judge(request):
 
         tweetResults = TweetResults.objects.get(tweet=tweet)
 
-        if isNegative:
+        if inputJudgement == '0':
+
+                #handle skip#
+                print("skipped")
+                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Skipped")
+                hist.save()
+                response = {    'redirect': True,
+                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
+                                }
+                print(response)
+                return JsonResponse(response)
+        elif isNegative:
 
             if inputJudgement == '1':
 
@@ -109,17 +120,6 @@ def judge(request):
                 print(response)
                 return JsonResponse(response)
 
-            elif inputJudgement == '0':
-
-                #handle skip
-                hist = UserTweetHistory.objects.create(user = user, tweet=tweet, judgement="Skipped")
-                hist.save()
-                response = {    'redirect': True,
-                                'redirect_url': reverse('app:stats', kwargs={'tweet_id': tweet.id}),
-                                }
-                print(response)
-                return JsonResponse(response)
-
     else:
 
         tweets = UserTweetHistory.objects.filter(user=user)
@@ -136,13 +136,13 @@ def judge(request):
         tweet = tweets[randint(0, len(tweets)-1)]
 
         # Load into context dict
-        context_dict ={}
-        #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
-        context_dict['tweet'] = tweet
-        tweetResults = TweetResults.objects.get(tweet=tweet)
-        print(tweet)
-        
-        print(tweet.id)
+    context_dict ={}
+    #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
+    context_dict['tweet'] = tweet
+    tweetResults = TweetResults.objects.get(tweet=tweet)
+    print(tweet)
+    
+    print(tweet.id)
 
     return render(request, 'app/judgement.html', context=context_dict)
 
