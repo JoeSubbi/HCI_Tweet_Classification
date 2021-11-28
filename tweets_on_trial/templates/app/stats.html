@@ -7,18 +7,17 @@
 
 {% block body_block %}
 
-    {% if tweet %}
-        <p>{{ tweet.body }}</p>
-    {% else %}
-        <p>No tweet found</p>
-    {% endif %}
-
-    {% if results %}
-        <p>{{ results.sum }} have voted on this tweet</p>
-    {% else %}
-        <p>No results found</p>
-    {% endif %}
-    
+    <div style="text-align: center; margin: 10px;">
+        <a href="{% url 'app:judge' %}" class="btn">[Judge next tweet]</a>
+        
+        <p>
+        {% if tweet %}
+                {{ results.sum }} Have voted on this tweet. Here are the statistics for: "{{ tweet.body }}"
+        {% else %}
+                No tweet found"
+        {% endif %}
+        </p>
+    </div>
     
     <div class="row">
         <div class="column" >
@@ -28,8 +27,5 @@
             {{ scatterplot | safe }} 
         </div>
     </div>
-
-
-    <a href="{% url 'app:judge' %}" class="btn">Judge next tweet</a>
     
 {% endblock %}
