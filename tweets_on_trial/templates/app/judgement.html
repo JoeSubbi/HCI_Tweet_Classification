@@ -6,6 +6,8 @@
 {% block body_block %}
 <script src="{% static 'js/Swipe.js' %}"
             crossorigin="anonymous"></script>
+
+            
     
     <div style="background-color: rgb(43, 99, 255); text-align: center; margin: 100px;">
             <button style = 'background-color: #4CAF50;' class="btn" id="left" type="button" name="left_btn" value="Positive" onclick="leftFunction({{tweet.id}})">Positive</button>
@@ -30,7 +32,7 @@
             <button style = 'background-color: #e7e7e7;' class="btn" id="down" type="button" name="up_btn" value="Skip" onclick="downFunction({{tweet.id}})">Skip</button>
 
     </div>
-    <footer class="page-footer font-small blue pt-4 bg-primary">
+    <footer id = "footer" class="page-footer font-small blue pt-4 bg-primary">
         <div class="footer-copyright text-center py-3" style="color: white;">
             Tweets on Trial
         </div>

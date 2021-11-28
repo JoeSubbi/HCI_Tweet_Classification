@@ -8,7 +8,7 @@
 {% block body_block %}
 
     <div style="text-align: center; margin: 10px;">
-        <a href="{% url 'app:judge' %}" class="btn">[Judge next tweet]</a>
+        <a href="{% url 'app:judge' %}" style = 'background-color: #4CAF50;' class="btn" id="left" type="button">Judge next tweet</a>
         
         <p>
         {% if tweet %}
