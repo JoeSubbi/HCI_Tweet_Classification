@@ -151,17 +151,14 @@ def stats(request, tweet_id):
         intTweet = int(tweet_id)
         tweet = Tweet.objects.get(id=intTweet)
         results = TweetResults.objects.get(tweet=tweet)
-        print(results)
         context_dict = {}
         context_dict['tweet'] = tweet
         context_dict['results'] = results
         
         
         graphs.get_map(tweet)
-        print('done map')
         graphs.get_bar(tweet)  
 
-        print('done for')
         
         with open(f"app/media/graphs/bar/{tweet.id}_bar.html","r") as f:
             bar_html = f.read()
