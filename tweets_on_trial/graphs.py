@@ -17,7 +17,7 @@ def get_total():
     root = tk.Tk()
     width = root.winfo_screenwidth()
 
-    d = {}
+    d = {"Positive":0, "Neutral":0, "Aggressive":0, "Offensive":0, "Aggressive & Offensive":0}
     for result in results:
         m = result.mode()
         if d.get(m): d[m] += 1
