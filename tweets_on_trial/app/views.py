@@ -148,15 +148,20 @@ def judge(request):
 
 def stats(request, tweet_id):
     try:
-        tweet = Tweet.objects.get(id=tweet_id)
+        intTweet = int(tweet_id)
+        tweet = Tweet.objects.get(id=intTweet)
         results = TweetResults.objects.get(tweet=tweet)
+        print(results)
         context_dict = {}
         context_dict['tweet'] = tweet
         context_dict['results'] = results
         
-        for t in  Tweet.objects.all():
-            graphs.get_map(t)
-            graphs.get_bar(t)  
+        
+        graphs.get_map(tweet)
+        print('done map')
+        graphs.get_bar(tweet)  
+
+        print('done for')
         
         with open(f"app/media/graphs/bar/{tweet.id}_bar.html","r") as f:
             bar_html = f.read()

@@ -41,18 +41,18 @@ def get_map(tweet):
     # other tweets data collection
     tweet_results_list = []
     tweet_body_list = []
-    if id <= 5:
-        for i in range(6):
-            tweet_results_list.append(TweetResults.objects.all()[:6][i].normalise())
-            tweet_body_list.append(Tweet.objects.get(id=i+1).body)
-            
-        tweet_results_list.remove(n)
-        tweet_body_list.remove(tweet_body)
-    else:
-        for i in range(5):
-            tweet_results_list.append(TweetResults.objects.all()[:5][i].normalise())
-            tweet_body_list.append(Tweet.objects.get(id=i+1).body)
-           
+
+    for results in TweetResults.objects.all():
+
+        tweet_results_list.append(results.normalise())
+
+        tweet_body_list.append(Tweet.objects.get(id = results.id).body)
+
+    # Remove important data, as it is overlayed on top
+
+    tweet_results_list.remove(n)
+    tweet_body_list.remove(tweet_body)
+
     aggressive_list = []
     offensive_list = []
     for i in range(len(tweet_results_list)):
