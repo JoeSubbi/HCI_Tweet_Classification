@@ -98,3 +98,10 @@ div.gallery {
     font-size: 1.05rem;
 } */
 
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+}

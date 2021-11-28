@@ -5,61 +5,96 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 import django
 django.setup()
 from app.models import Tweet, TweetResults
-
-import datetime
-import matplotlib.pyplot as plt
+from plotly.offline import plot
+import plotly.graph_objects as go # bar chart import
+import plotly.express as px
+import pyautogui
 
 # Bar chart of total tweets
 def get_total():
-    tweets = Tweet.objects.all()
     results = TweetResults.objects.all()
+
+    width, height= pyautogui.size()
 
     d = {}
     for result in results:
         m = result.mode()
         if d.get(m): d[m] += 1
         else: d[m] = 1
+    
+    fig = px.bar(x=list(d.keys()), y=list(d.values()), title="Model Opinion of All Categorised Tweets", labels=dict(x="Category", y="Number of Tweets"),
+                 color=['#2ca02c', '#dc143c','#1f77b4', '#778899', '#ffa500'], color_discrete_map="identity")
+    fig.update_layout(title_font_size=35, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)", width=width/1.5)
+    
+    fig.write_html("app/media/graphs/analytics/total_bar.html", full_html=False, include_plotlyjs='cdn')
 
-    plt.title("Modal opinion of all categorised tweets")
-    plt.ylabel("Number of tweets")
-    plt.xlabel("Category")
-    plt.bar(x=d.keys(), height=d.values())
-    plt.savefig("app/media/graphs/analytics/total_bar")
-    plt.clf()
 
-# Compass of a single tweet
+
+# Compass of a single tweet, compared against others
 def get_map(tweet):
     id = tweet.id
+    
+    # rated tweet data collection 
     n = TweetResults.objects.filter(tweet=tweet)[0].normalise()
+    tweet_body = Tweet.objects.get(id=tweet.id).body
+    
+    # other tweets data collection
+    tweet_results_list = []
+    tweet_body_list = []
+    if id <= 5:
+        for i in range(6):
+            tweet_results_list.append(TweetResults.objects.all()[:6][i].normalise())
+            tweet_body_list.append(Tweet.objects.get(id=i+1).body)
+            
+        tweet_results_list.remove(n)
+        tweet_body_list.remove(tweet_body)
+    else:
+        for i in range(5):
+            tweet_results_list.append(TweetResults.objects.all()[:5][i].normalise())
+            tweet_body_list.append(Tweet.objects.get(id=i+1).body)
+           
+    aggressive_list = []
+    offensive_list = []
+    for i in range(len(tweet_results_list)):
+        aggressive_list.append(tweet_results_list[range(len(tweet_results_list))[i]]["aggressive"])
+        offensive_list.append(tweet_results_list[range(len(tweet_results_list))[i]]["offensive"])
+    
+    # create and format scatter plot
+    width, height = pyautogui.size()
+    d = {'Aggressive': [0, 1], 'Offensive': [0, 1]}
+    
+    fig = px.scatter(title="Is the Tweet More Aggressive than Offensive?", width=width/2)
+    fig.update_layout(yaxis_range=[0,1], xaxis_range=[0,1], title_font_size=25, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)", 
+                      hovermode=None)
+    
+    # adding data to scatter plot
+    fig.add_trace(go.Scatter(x=[n["aggressive"]], y=[n["offensive"]], mode="markers", name="Rated Tweet", hovertemplate=tweet_body, marker_color="crimson"))
+    fig.add_trace(go.Scatter(x=aggressive_list, y=offensive_list, mode="markers", name="Other Tweets", hovertemplate=tweet_body_list, marker_color="#778899"))
+    fig.update_traces(marker_size=20)
+    fig.update_xaxes(title_text="Aggressive")
+    fig.update_yaxes(title_text="Offensive")
+    
+    
+    
+    fig.write_html(f"app/media/graphs/map/{tweet.id}_map.html", full_html=False, include_plotlyjs='cdn')
 
-    x = n["aggressive"]
-    y = n["offensive"]
-
-    plt.title("Summary of opinions on this tweet")
-    plt.ylabel("Offensive",)
-    plt.xlabel("Aggressive",)
-
-    plt.plot(x,y, "ro")
-
-    plt.xlim([0, 1])
-    plt.ylim([0, 1])
-
-    plt.savefig(f"app/media/graphs/map/{tweet.id}_map")
-    plt.clf()
 
 # Bar chart of single tweet
 def get_bar(tweet):
     id = tweet.id
     r = TweetResults.objects.filter(tweet=tweet)[0]
-    x = ["Positive", "Neutral", "Aggressive", "Offensive"]
-    y = [r.positive, r.neutral, r.aggressive, r.offensive]
-
-    plt.title("Summary of opinions on this tweet")
-    plt.ylabel("Number of votes")
-    plt.xlabel("Category")
-    plt.bar(x, y)
-    plt.savefig(f"app/media/graphs/bar/{tweet.id}_bar")
-    plt.clf()
+    x_list = ["Positive", "Neutral", "Aggressive", "Offensive"]
+    y_list = [r.positive, r.neutral, r.aggressive, r.offensive]
+    
+    width, height= pyautogui.size()
+    
+    # create bar chart
+    fig = px.bar(x=x_list, y=y_list, title="Summary of Opinions on this Tweet", labels=dict(x="Category", y="Number of Votes"), 
+                 color=['#2ca02c', '#778899','#1f77b4',  '#dc143c'], color_discrete_map="identity", width=width/2)
+    fig.update_layout(title_font_size=25, title_xanchor="left", paper_bgcolor="rgba(0,0,0,0)")
+    
+    fig.write_html(f"app/media/graphs/bar/{tweet.id}_bar.html", full_html=False, include_plotlyjs='cdn')
+    
 
 if __name__ == '__main__':
     for t in  Tweet.objects.all():
