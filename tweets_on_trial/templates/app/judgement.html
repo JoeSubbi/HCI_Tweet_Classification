@@ -30,9 +30,6 @@
             <button style = 'background-color: #e7e7e7;' class="btn" id="down" type="button" name="up_btn" value="Skip" onclick="downFunction({{tweet.id}})">Skip</button>
 
     </div>
-    {% if tweet %}
-        <p style="text-align:center;"><a href="{% url 'app:stats' tweet.id %}" class="btn">Go to tweet global results</a></p>
-    {% endif %}
     <footer class="page-footer font-small blue pt-4 bg-primary">
         <div class="footer-copyright text-center py-3" style="color: white;">
             Tweets on Trial
