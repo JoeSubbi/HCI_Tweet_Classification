@@ -8,13 +8,14 @@ from app.models import Tweet, TweetResults
 from plotly.offline import plot
 import plotly.graph_objects as go # bar chart import
 import plotly.express as px
-import pyautogui
+import tkinter as tk
 
 # Bar chart of total tweets
 def get_total():
     results = TweetResults.objects.all()
 
-    width, height= pyautogui.size()
+    root = tk.Tk()
+    width = root.winfo_screenwidth()
 
     d = {}
     for result in results:
@@ -60,7 +61,8 @@ def get_map(tweet):
         offensive_list.append(tweet_results_list[range(len(tweet_results_list))[i]]["offensive"])
     
     # create and format scatter plot
-    width, height = pyautogui.size()
+    root = tk.Tk()
+    width = root.winfo_screenwidth()
     d = {'Aggressive': [0, 1], 'Offensive': [0, 1]}
     
     fig = px.scatter(title="Is the Tweet More Aggressive than Offensive?", width=width/2)
@@ -86,7 +88,8 @@ def get_bar(tweet):
     x_list = ["Positive", "Neutral", "Aggressive", "Offensive"]
     y_list = [r.positive, r.neutral, r.aggressive, r.offensive]
     
-    width, height= pyautogui.size()
+    root = tk.Tk()
+    width = root.winfo_screenwidth()
     
     # create bar chart
     fig = px.bar(x=x_list, y=y_list, title="Summary of Opinions on this Tweet", labels=dict(x="Category", y="Number of Votes"), 
