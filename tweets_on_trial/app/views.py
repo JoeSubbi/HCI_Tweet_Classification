@@ -26,32 +26,18 @@ def judge(request):
     if user.is_anonymous:
         return HttpResponse("Not logged in")
     
-    tweets = UserTweetHistory.objects.filter(user=user)
     
-    # Tweets within past 5 days
-    DAYS = 10
-    past = datetime.now() - timedelta(days=DAYS)
-    tweets = Tweet.objects.exclude(id__in=[t.tweet.id for t in tweets]).filter(date__gte=past)
     
-    if len(tweets) == 0:
-        return HttpResponse("No more tweets right now, come back later")
 
-    # Choose Random
-    tweet = tweets[randint(0, len(tweets)-1)]
+    if request.is_ajax and request.method == 'POST':
 
-    # Load into context dict
-    context_dict ={}
-    #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
-    context_dict['tweet'] = tweet
-    tweetResults = TweetResults.objects.get(tweet=tweet)
-    print(tweet)
-    
-    print(tweet.id)
+        print(request.POST.get('tweetId'))
 
-    if request.is_ajax:
-
+        tweet = Tweet.objects.get(id =request.POST.get('tweetId'))
         isNegative = request.POST.get('isNegative')
         inputJudgement = request.POST.get('inputJudgement')
+
+        tweetResults = TweetResults.objects.get(tweet=tweet)
 
         if isNegative:
 
@@ -125,6 +111,30 @@ def judge(request):
                                 }
                 print(response)
                 return JsonResponse(response)
+
+    else:
+
+        tweets = UserTweetHistory.objects.filter(user=user)
+    
+        # Tweets within past 5 days
+        DAYS = 100
+        past = datetime.now() - timedelta(days=DAYS)
+        tweets = Tweet.objects.exclude(id__in=[t.tweet.id for t in tweets]).filter(date__gte=past)
+        
+        if len(tweets) == 0:
+            return HttpResponse("No more tweets right now, come back later")
+
+        # Choose Random
+        tweet = tweets[randint(0, len(tweets)-1)]
+
+        # Load into context dict
+        context_dict ={}
+        #obj, created = Tweet.objects.get_or_create(body = "Can't wait to get battered into this chippy")
+        context_dict['tweet'] = tweet
+        tweetResults = TweetResults.objects.get(tweet=tweet)
+        print(tweet)
+        
+        print(tweet.id)
 
     return render(request, 'app/judgement.html', context=context_dict)
 

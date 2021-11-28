@@ -34,8 +34,11 @@ $.ajaxSetup({
 //Global variables for determining what is being added to db
 var isNegative = false;
 var inputJudgement;
+var tweetID;
 
-function leftFunction() {
+function leftFunction(inId) {
+
+    tweetID= inId;
 
     var confirmBool = false;
     
@@ -59,9 +62,10 @@ function leftFunction() {
 
 };
 
-function upFunction() {
+function upFunction(inId) {
 
     var confirmBool = false;
+    tweetID= inId;
     
     if(isNegative){
 
@@ -83,9 +87,10 @@ function upFunction() {
 
 };
 
-function downFunction() {
+function downFunction(inId) {
 
     var confirmBool = false;
+    tweetID= inId;
     
     if(isNegative){
 
@@ -112,9 +117,11 @@ function downFunction() {
 
 };
 
-function rightFunction() {
+function rightFunction(inId) {
 
     var confirmBool = false;
+
+    tweetID= inId;
     
     if(isNegative){
 
@@ -135,6 +142,15 @@ function rightFunction() {
     };
 
 };
+
+
+
+function getIdFunc(inId){
+
+    console.info(inId);
+    tweetID = inId;
+
+}
 
 $(document).ready(function () {
 
@@ -297,6 +313,7 @@ function sendData() {
         data: {
             'inputJudgement': inputJudgement,
             'isNegative': isNegative,
+            'tweetId': tweetID,
         },
 
         success: function (response) {
