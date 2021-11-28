@@ -100,18 +100,11 @@ function downFunction(inId) {
 
         inputJudgement = 0;
 
+        console.info("is skipping")
+
         confirmBool = this.confirm("You have selected skip, do you wish to skip?")
 
-        if (confirmBool) {
-
-            sendData();
-            this.location.reload();
-    
-        } else {
-    
-            resetJudgement();
-    
-        };
+        checkRespnse(confirmBool);
 
     }
 
@@ -255,17 +248,7 @@ $(document).ready(function () {
 
             confirmBool = this.confirm("You have selected skip, are you sure?")
 
-            if (confirmBool) {
-
-                sendData();
-                this.location.reload();
-        
-            } else {
-        
-                resetJudgement();
-        
-            };
-
+            checkRespnse(confirmBool);
             
 
             map[40] = false;
@@ -302,8 +285,6 @@ function resetJudgement() {
 }
 
 function sendData() {
-
-    console.info("test")
 
     $.ajax({
         headers : {
