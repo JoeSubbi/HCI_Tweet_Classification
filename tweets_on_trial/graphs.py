@@ -19,9 +19,10 @@ def get_total():
 
     d = {"Positive":0, "Neutral":0, "Aggressive":0, "Offensive":0, "Aggressive & Offensive":0}
     for result in results:
-        m = result.mode()
-        if d.get(m): d[m] += 1
-        else: d[m] = 1
+        if result.valid:
+            m = result.mode()
+            if d.get(m): d[m] += 1
+            else: d[m] = 1
     
     fig = px.bar(x=list(d.keys()), y=list(d.values()), title="Model Opinion of All Categorised Tweets", labels=dict(x="Category", y="Number of Tweets"),
                  color=['#87de5f','#1f77b4', '#ed6b6b', '#ababab', '#f0a259'], color_discrete_map="identity")
