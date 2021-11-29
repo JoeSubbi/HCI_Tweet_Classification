@@ -124,3 +124,7 @@ div.gallery {
   align-items: center;
   padding:10px; 
 }
+
+text.stroke {
+  -webkit-text-stroke: 0.25px black;
+}
